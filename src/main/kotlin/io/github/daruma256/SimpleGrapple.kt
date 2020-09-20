@@ -13,8 +13,10 @@ import org.bukkit.Material
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
+import org.bukkit.entity.Projectile
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
+import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.player.PlayerFishEvent
 import org.bukkit.inventory.ItemStack
@@ -71,11 +73,14 @@ class SimpleGrapple : JavaPlugin(), Listener {
                 GlobalScope.launch {
                     player.velocity = getVec(player.location, event.hook.location)
                     coolDown.add(player)
-                    noFall.add(player)
-                    delay(2500)
+                    if (!noFall.contains(player)) {
+                        noFall.add(player)
+                    }
+                    delay(1500)
                     if (coolDown.contains(player)) {
                         coolDown.remove(player)
                     }
+                    delay(1000)
                     noFall.remove(player)
                 }
             }
