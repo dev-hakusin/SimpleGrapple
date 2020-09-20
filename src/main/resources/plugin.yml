@@ -1,0 +1,8 @@
+name: SimpleGrapple
+version: @version@
+main: io.github.daruma256.SimpleGrapple
+api-version: 1.16
+
+commands:
+  grapple:
+    description: give grapple command.

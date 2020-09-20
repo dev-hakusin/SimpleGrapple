@@ -1,0 +1,70 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+apply plugin: 'kotlin'
+
+group = 'io.github.daruma256'
+version = '1.0-SNAPSHOT'
+
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+
+repositories {
+    mavenCentral()
+    maven {
+        name = 'spigotmc-repo'
+        url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+    }
+    maven {
+        name = 'sonatype'
+        url = 'https://oss.sonatype.org/content/groups/public/'
+    }
+}
+
+buildscript {
+    ext {
+        kotlin_version = '1.4.10'
+        spigot_api_version = '1.16.1-R0.1-SNAPSHOT'
+        coroutines_version = '1.3.9'
+    }
+    repositories {
+        maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+sourceCompatibility = targetCompatibility = 1.8
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+processResources {
+    filteringCharset = 'UTF-8'
+    from(sourceSets.main.resources.srcDirs) {
+        include '**/*.yml'
+        filter(ReplaceTokens, tokens: [version: project.version])
+        filter(ReplaceTokens, tokens: [name: project.rootProject.name])
+    }
+}
+
+
+configurations {
+    embed
+    compile.extendsFrom(embed)
+}
+
+dependencies {
+    compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jdk8', version: kotlin_version
+    embed group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-core', version: coroutines_version
+    compile group: 'org.jetbrains.kotlin', name: 'kotlin-reflect', version: kotlin_version
+    embed group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib', version: kotlin_version
+
+    compile group: 'org.spigotmc', name: 'spigot-api', version: spigot_api_version
+
+    compile fileTree(dir: "libs", include: "*.jar")
+}
+
+jar {
+    from configurations.embed.findAll { !it.name.endsWith('pom') }.collect { it.isDirectory() ? it : zipTree(it) }
+}
