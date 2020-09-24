@@ -1,6 +1,5 @@
 package io.github.daruma256.extension
 
-import com.sun.org.apache.xpath.internal.operations.Bool
 import io.github.daruma256.SimpleGrapple
 import org.bukkit.NamespacedKey
 import org.bukkit.inventory.ItemStack

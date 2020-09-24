@@ -13,10 +13,8 @@ import org.bukkit.Material
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
-import org.bukkit.entity.Projectile
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
-import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.player.PlayerFishEvent
 import org.bukkit.inventory.ItemStack
@@ -101,10 +99,9 @@ class SimpleGrapple : JavaPlugin(), Listener {
     private fun getVec(loc1: Location, loc2: Location): Vector {
         val g = -0.08
         val d = loc2.distance(loc1)
-        val t = d
-        val vX = (1.0+0.4*t) * (loc2.x - loc1.x) / t
-        val vY = (1.0+0.03*t) * (loc2.y - loc1.y) / t - 0.5*g*t
-        val vZ = (1.0+0.4*t) * (loc2.z - loc1.z) / t
+        val vX = (1.0+0.4* d) * (loc2.x - loc1.x) / d
+        val vY = (1.0+0.03* d) * (loc2.y - loc1.y) / d - 0.5*g* d
+        val vZ = (1.0+0.4* d) * (loc2.z - loc1.z) / d
         return Vector(vX, vY, vZ)
     }
 
